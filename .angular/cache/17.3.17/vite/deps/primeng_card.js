@@ -1,17 +1,17 @@
 import {
-  CommonModule,
-  NgClass,
-  NgIf,
-  NgStyle,
-  NgTemplateOutlet
-} from "./chunk-T76FZRMF.js";
-import {
   Footer,
   Header,
   ObjectUtils,
   PrimeTemplate,
   SharedModule
 } from "./chunk-MW6N3XTI.js";
+import {
+  CommonModule,
+  NgClass,
+  NgIf,
+  NgStyle,
+  NgTemplateOutlet
+} from "./chunk-T76FZRMF.js";
 import {
   ChangeDetectionStrategy,
   Component,

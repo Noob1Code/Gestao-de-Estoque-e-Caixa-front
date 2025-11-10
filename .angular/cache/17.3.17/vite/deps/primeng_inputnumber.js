@@ -1,14 +1,12 @@
 import {
-  DROPDOWN_VALUE_ACCESSOR,
-  Dropdown,
-  DropdownItem,
-  DropdownModule
-} from "./chunk-BFA7VBH2.js";
-import "./chunk-NXB5JTTQ.js";
-import "./chunk-YGHISWVM.js";
+  INPUTNUMBER_VALUE_ACCESSOR,
+  InputNumber,
+  InputNumberModule
+} from "./chunk-SRQC5K3P.js";
+import "./chunk-VLBR54GI.js";
 import "./chunk-7NFPIS7I.js";
 import "./chunk-DJAXFXFY.js";
-import "./chunk-I54QP7DZ.js";
+import "./chunk-MIBMNMTB.js";
 import "./chunk-RF3O4RNU.js";
 import "./chunk-C6IC6WIT.js";
 import "./chunk-WVUL5KXD.js";
@@ -19,9 +17,8 @@ import "./chunk-T76FZRMF.js";
 import "./chunk-6JJ7KVRE.js";
 import "./chunk-T4QU4GDF.js";
 export {
-  DROPDOWN_VALUE_ACCESSOR,
-  Dropdown,
-  DropdownItem,
-  DropdownModule
+  INPUTNUMBER_VALUE_ACCESSOR,
+  InputNumber,
+  InputNumberModule
 };
-//# sourceMappingURL=primeng_dropdown.js.map
+//# sourceMappingURL=primeng_inputnumber.js.map
