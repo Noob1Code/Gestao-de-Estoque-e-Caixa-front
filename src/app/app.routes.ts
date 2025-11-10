@@ -4,7 +4,7 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 import { AuthGuard } from './core/guards/auth.guard';
 import { AdminGuard } from './core/guards/admin.guard';
 import { UsuariosComponent } from './pages/admin/usuarios/usuarios.component';
-
+import { EstoqueComponent } from './pages/admin/estoque/estoque.component';
 
 export const routes: Routes = [
     {
@@ -21,7 +21,11 @@ export const routes: Routes = [
                 component: UsuariosComponent,
                 canActivate: [AdminGuard] // Protegido (só ADMIN)
             },
-        
+            {
+                path: 'admin/estoque',
+                component: EstoqueComponent,
+                canActivate: [AdminGuard] // Protegido (só ADMIN)
+            },
             
         ]
     },
