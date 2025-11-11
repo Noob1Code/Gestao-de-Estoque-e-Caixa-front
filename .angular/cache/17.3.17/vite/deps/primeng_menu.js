@@ -8,12 +8,6 @@ import {
   RouterModule
 } from "./chunk-5MGUF5ZW.js";
 import {
-  animate,
-  style,
-  transition,
-  trigger
-} from "./chunk-I54QP7DZ.js";
-import {
   DomSanitizer
 } from "./chunk-Y6VDGAZN.js";
 import "./chunk-2IRRX5HF.js";
@@ -25,6 +19,12 @@ import {
   ConnectedOverlayScrollHandler,
   DomHandler
 } from "./chunk-JZQAVOZS.js";
+import {
+  animate,
+  style,
+  transition,
+  trigger
+} from "./chunk-I54QP7DZ.js";
 import {
   OverlayService,
   PrimeNGConfig,
