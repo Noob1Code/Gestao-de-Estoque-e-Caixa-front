@@ -91,6 +91,11 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         label: 'Geral',
         items: [
           {
+            label: 'Dashboard',
+            icon: 'pi pi-home',
+            routerLink: '/dashboard'
+          },
+          {
             label: 'Relatórios',
             icon: 'pi pi-chart-bar',
             routerLink: '/relatorios'

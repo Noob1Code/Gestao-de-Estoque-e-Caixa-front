@@ -18,6 +18,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TagModule } from 'primeng/tag';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @Component({
   selector: 'app-estoque',
@@ -36,7 +37,8 @@ import { DropdownModule } from 'primeng/dropdown';
     InputTextareaModule,
     DropdownModule,
     InputNumberModule,
-    TagModule
+    TagModule,
+    InputSwitchModule
   ],
   templateUrl: './estoque.component.html',
   styleUrls: ['./estoque.component.css'],
@@ -70,7 +72,8 @@ export class EstoqueComponent implements OnInit {
       nome: ['', [Validators.required]],
       categoria: ['', [Validators.required]],
       quantidadeEstoque: [0, [Validators.required, Validators.min(0)]],
-      precoUnitario: [0, [Validators.required, Validators.min(0)]]
+      precoUnitario: [0, [Validators.required, Validators.min(0)]],
+      ativo: [true, [Validators.required]]
     });
 
     this.movimentoForm = this.fb.group({
@@ -87,7 +90,7 @@ export class EstoqueComponent implements OnInit {
       next: (data) => {
         this.produtos = data;
       },
-      error: () => { 
+      error: () => {
         this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Falha ao carregar produtos.' });
       }
     });
@@ -96,7 +99,7 @@ export class EstoqueComponent implements OnInit {
   abrirDialogNovo(): void {
     this.isEditMode = false;
     this.selectedProdutoId = null;
-    this.produtoForm.reset({ quantidadeEstoque: 0, precoUnitario: 0 });
+    this.produtoForm.reset({ quantidadeEstoque: 0, precoUnitario: 0, ativo: true });   
     this.produtoDialog = true;
   }
 
