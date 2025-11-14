@@ -11,21 +11,30 @@ export class VendaService {
   private apiUrl = 'http://localhost:8080/api/vendas';
   private http = inject(HttpClient);
 
+  private toLocalISOString(date: Date): string {
+    const pad = (num: number) => (num < 10 ? '0' : '') + num;
+
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1);
+    const day = pad(date.getDate());
+
+    return `${year}-${month}-${day}`;
+  }
+
   registrarVenda(venda: VendaRequestDTO): Observable<VendaResponseDTO> {
     return this.http.post<VendaResponseDTO>(this.apiUrl, venda);
   }
 
   listarVendas(filtros?: any): Observable<VendaResponseDTO[]> {
     let params = new HttpParams();
+
     if (filtros && filtros.dataInicio) {
-        const dataInicioString = new Date(filtros.dataInicio).toISOString().split('T')[0];
-        params = params.append('dataInicio', dataInicioString);
+      const dataInicioDate = new Date(filtros.dataInicio);
+      params = params.append('dataInicio', this.toLocalISOString(dataInicioDate));
     }
     if (filtros && filtros.dataFim) {
-        let dataFim = new Date(filtros.dataFim);
-        dataFim.setDate(dataFim.getDate() + 1); 
-        const dataFimString = dataFim.toISOString().split('T')[0];
-        params = params.append('dataFim', dataFimString);
+      let dataFim = new Date(filtros.dataFim);
+      params = params.append('dataFim', this.toLocalISOString(dataFim));
     }
     return this.http.get<VendaResponseDTO[]>(this.apiUrl, { params });
   }

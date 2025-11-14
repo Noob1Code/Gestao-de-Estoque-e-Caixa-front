@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ProdutoRequestDTO, ProdutoResponseDTO, MovimentoEstoqueRequestDTO } from '../models/produto.dto';
@@ -8,10 +8,14 @@ import { ProdutoRequestDTO, ProdutoResponseDTO, MovimentoEstoqueRequestDTO } fro
 export class ProdutoService {
 
   private apiUrl = 'http://localhost:8080/api/produtos';
-  private http= inject( HttpClient);
+  private http = inject(HttpClient);
 
-  listarTodos(): Observable<ProdutoResponseDTO[]> {
-    return this.http.get<ProdutoResponseDTO[]>(this.apiUrl);
+  listarTodos(filtros?: { ativo: boolean }): Observable<ProdutoResponseDTO[]> {
+    let params = new HttpParams();
+    if (filtros && filtros.ativo === true) {
+      params = params.append('ativo', 'true');
+    }
+    return this.http.get<ProdutoResponseDTO[]>(this.apiUrl, { params });
   }
 
   criar(produto: ProdutoRequestDTO): Observable<ProdutoResponseDTO> {

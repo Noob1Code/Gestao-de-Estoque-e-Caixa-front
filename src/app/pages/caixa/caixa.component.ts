@@ -64,8 +64,8 @@ export class CaixaComponent implements OnInit {
   }
 
   buscarProdutos(event: AutoCompleteCompleteEvent): void {
-    this.produtoService.listarTodos().subscribe(produtos => {
-      this.produtosSugeridos = produtos.filter(p =>
+    this.produtoService.listarTodos({ ativo: true }).subscribe(produtosAtivos => {
+      this.produtosSugeridos = produtosAtivos.filter(p =>
         p.nome.toLowerCase().includes(event.query.toLowerCase())
       );
     });
