@@ -7,6 +7,7 @@ import { UsuariosComponent } from './pages/admin/usuarios/usuarios.component';
 import { LoginComponent } from './pages/login/login.component';
 import { OperadorGuard } from './core/guards/operador.guard';
 import { CaixaComponent } from './pages/caixa/caixa.component';
+import { RelatoriosComponent } from './pages/relatorios/relatorios.component';
 
 export const routes: Routes = [
     {
@@ -33,7 +34,11 @@ export const routes: Routes = [
                 component: CaixaComponent,
                 canActivate: [OperadorGuard] // Protegida (só OPERADOR)
             },
-            
+            {
+                path: 'relatorios',
+                component: RelatoriosComponent // Protegida (só AuthGuard), op e adm podem acessar
+            },
+
         ]
     },
 
