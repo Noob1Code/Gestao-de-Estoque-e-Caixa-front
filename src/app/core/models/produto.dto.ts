@@ -5,6 +5,7 @@ export interface ProdutoResponseDTO {
   categoria: string;
   quantidadeEstoque: number;
   precoUnitario: number;
+  ativo: boolean; 
 }
 export type TipoMovimento = 'ENTRADA' | 'AJUSTE';
 
@@ -14,6 +15,7 @@ export interface ProdutoRequestDTO {
   categoria: string;
   quantidadeEstoque: number;
   precoUnitario: number;
+  ativo: boolean;
 }
 
 export interface MovimentoEstoqueRequestDTO {
