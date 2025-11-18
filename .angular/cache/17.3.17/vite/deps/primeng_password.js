@@ -1,8 +1,4 @@
 import {
-  InputText,
-  InputTextModule
-} from "./chunk-VLBR54GI.js";
-import {
   TimesIcon
 } from "./chunk-7NFPIS7I.js";
 import {
@@ -16,6 +12,10 @@ import {
   ConnectedOverlayScrollHandler,
   DomHandler
 } from "./chunk-JZQAVOZS.js";
+import {
+  InputText,
+  InputTextModule
+} from "./chunk-VLBR54GI.js";
 import {
   NG_VALUE_ACCESSOR
 } from "./chunk-DJAXFXFY.js";
