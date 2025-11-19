@@ -7,15 +7,13 @@ import { Observable } from 'rxjs';
 export const CaixaCanDeactivateGuard: CanDeactivateFn<CaixaComponent> = (
   component: CaixaComponent
 ) => {
-  // 1. Condição: Se o carrinho estiver vazio, permite a saída imediatamente.
+
+  const confirmationService = inject(ConfirmationService); 
   if (component.itensVenda.length === 0) {
     return true;
   }
   
-  // 2. Se houver itens, solicita confirmação via Observable.
   return new Observable<boolean>(observer => {
-    const confirmationService = inject(ConfirmationService); 
-
     confirmationService.confirm({
       message: 'Você tem itens no carrinho. Deseja realmente sair e perder esta venda?',
       header: 'Atenção: Venda em Andamento',
@@ -23,13 +21,11 @@ export const CaixaCanDeactivateGuard: CanDeactivateFn<CaixaComponent> = (
       acceptLabel: 'Sim, Sair',
       rejectLabel: 'Não, Continuar Editando',
       accept: () => {
-        // Opcional: Limpa o carrinho antes de permitir a saída
         component.cancelarVenda(); 
         observer.next(true); 
         observer.complete();
       },
       reject: () => {
-        // Bloqueia a saída
         observer.next(false);
         observer.complete();
       }

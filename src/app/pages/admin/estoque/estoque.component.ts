@@ -5,8 +5,6 @@ import { ProdutoService } from '../../../core/services/produto.service';
 import { ProdutoRequestDTO, ProdutoResponseDTO, MovimentoEstoqueRequestDTO } from '../../../core/models/produto.dto';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { AuthService } from '../../../core/services/auth.service';
-
-// Importações PrimeNG
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -136,7 +134,7 @@ export class EstoqueComponent implements OnInit {
       this.produtoService.atualizar(this.selectedProdutoId, request).subscribe({
         next: (response) => {
           this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: `Produto ${response.nome} atualizado.` });
-          this.produtoForm.markAsPristine(); // <-- ESSENCIAL: MARCA COMO SALVO
+          this.produtoForm.markAsPristine();
           this.fecharDialog();
           this.carregarProdutos();
         },
@@ -149,7 +147,7 @@ export class EstoqueComponent implements OnInit {
       this.produtoService.criar(request).subscribe({
         next: (response) => {
           this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: `Produto ${response.nome} criado.` });
-          this.produtoForm.markAsPristine(); // <-- ESSENCIAL: MARCA COMO SALVO
+          this.produtoForm.markAsPristine();
           this.fecharDialog();
           this.carregarProdutos();
         },

@@ -29,18 +29,15 @@ export const FormCanDeactivateGuard: CanDeactivateFn<CrudComponent> = (
         acceptLabel: 'Sim, Descartar',
         rejectLabel: 'Não, Continuar Editando',
         accept: () => {
-          // Permite a saída.
           observer.next(true); 
           observer.complete();
         },
         reject: () => {
-          // Bloqueia a saída.
           observer.next(false);
           observer.complete();
         }
       });
     });
   }
-  // Se o formulário não estiver 'dirty' ou o dialog não estiver aberto, permite a saída.
   return true;
 };

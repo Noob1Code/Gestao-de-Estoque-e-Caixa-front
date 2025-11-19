@@ -2,13 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MessageService, ConfirmationService } from 'primeng/api'; 
-// Nossos Serviços e DTOs
 import { ProdutoService } from '../../core/services/produto.service';
 import { VendaService } from '../../core/services/venda.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ProdutoResponseDTO } from '../../core/models/produto.dto';
 import { ItemVenda, VendaRequestDTO, ItemVendaRequestDTO } from '../../core/models/venda.dto';
-// Importações PrimeNG
 import { CardModule } from 'primeng/card';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
@@ -184,14 +182,12 @@ export class CaixaComponent implements OnInit {
       return;
     }
 
-    // 1. Mapeia o "carrinho" (ItemVenda) para o DTO (ItemVendaRequestDTO)
     const itensRequest: ItemVendaRequestDTO[] = this.itensVenda.map(item => ({
       produtoId: item.produto.id,
       quantidade: item.quantidade,
       precoUnitario: item.precoUnitario
     }));
 
-    // 2. Monta o DTO da Venda
     const vendaRequest: VendaRequestDTO = {
       usuarioId: usuarioLogado.id,
       itens: itensRequest,
@@ -199,7 +195,6 @@ export class CaixaComponent implements OnInit {
       total: this.totalVenda
     };
 
-    // 3. Envia para o serviço
     this.vendaService.registrarVenda(vendaRequest).subscribe({
       next: (response) => {
         this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: `Venda #${response.id} registrada! Troco: ${response.troco.toFixed(2)}` });

@@ -5,8 +5,6 @@ import { UsuarioService } from '../../../core/services/usuario.service';
 import { UsuarioRequestDTO, UsuarioResponseDTO } from '../../../core/models/usuario.dto';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { AuthService } from '../../../core/services/auth.service';
-
-// Importações PrimeNG
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
