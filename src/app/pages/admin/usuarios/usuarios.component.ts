@@ -5,8 +5,6 @@ import { UsuarioService } from '../../../core/services/usuario.service';
 import { UsuarioRequestDTO, UsuarioResponseDTO } from '../../../core/models/usuario.dto';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { AuthService } from '../../../core/services/auth.service';
-
-// Importações PrimeNG
 import { TableModule } from 'primeng/table';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -87,6 +85,7 @@ export class UsuariosComponent implements OnInit {
     this.isEditMode = false;
     this.selectedUsuarioId = null;
     this.usuarioForm.reset({ ativo: true });
+    this.usuarioForm.markAsPristine();
 
     this.setSenhaValidators(true);
 
@@ -104,6 +103,7 @@ export class UsuariosComponent implements OnInit {
       ativo: usuario.ativo,
       senha: ''
     });
+    this.usuarioForm.markAsPristine();
 
     this.setSenhaValidators(false);
 
@@ -137,6 +137,7 @@ export class UsuariosComponent implements OnInit {
           if (this.selectedUsuarioId === loggedUserId) {
             this.authService.updateLoggedUser(response);
           }
+          this.usuarioForm.markAsPristine();
           this.fecharDialog();
           this.carregarUsuarios();
         },
@@ -149,6 +150,7 @@ export class UsuariosComponent implements OnInit {
       this.usuarioService.criar(request).subscribe({
         next: (response) => {
           this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: `Usuário ${response.nomeCompleto} criado.` });
+          this.usuarioForm.markAsPristine();
           this.fecharDialog();
           this.carregarUsuarios();
         },
@@ -181,7 +183,21 @@ export class UsuariosComponent implements OnInit {
   }
 
   fecharDialog(): void {
-    this.usuarioDialog = false;
+    if (this.usuarioForm.dirty) {
+      this.confirmationService.confirm({
+        message: 'Você tem alterações não salvas. Deseja realmente sair e descartar as mudanças?',
+        header: 'Atenção: Dados não Salvos',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Sim, Descartar',
+        rejectLabel: 'Não, Continuar Editando',
+        accept: () => {
+          this.usuarioForm.reset();
+          this.usuarioDialog = false;
+        }
+      });
+    } else {
+      this.usuarioDialog = false;
+    }
   }
 
   private setSenhaValidators(isRequired: boolean): void {
