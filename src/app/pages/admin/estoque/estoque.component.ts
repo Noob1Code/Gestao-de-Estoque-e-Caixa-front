@@ -99,7 +99,8 @@ export class EstoqueComponent implements OnInit {
   abrirDialogNovo(): void {
     this.isEditMode = false;
     this.selectedProdutoId = null;
-    this.produtoForm.reset({ quantidadeEstoque: 0, precoUnitario: 0, ativo: true });   
+    this.produtoForm.reset({ quantidadeEstoque: 0, precoUnitario: 0, ativo: true });
+    this.produtoForm.markAsPristine();
     this.produtoDialog = true;
   }
 
@@ -118,6 +119,7 @@ export class EstoqueComponent implements OnInit {
     this.isEditMode = true;
     this.selectedProdutoId = produto.id;
     this.produtoForm.patchValue(produto);
+    this.produtoForm.markAsPristine();
     this.produtoDialog = true;
   }
 
@@ -134,10 +136,11 @@ export class EstoqueComponent implements OnInit {
       this.produtoService.atualizar(this.selectedProdutoId, request).subscribe({
         next: (response) => {
           this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: `Produto ${response.nome} atualizado.` });
+          this.produtoForm.markAsPristine(); // <-- ESSENCIAL: MARCA COMO SALVO
           this.fecharDialog();
           this.carregarProdutos();
         },
-        error: (err) => { // Não mudei para '_err' pois 'err.error.message' está em uso
+        error: (err) => { 
           this.messageService.add({ severity: 'error', summary: 'Erro', detail: err.error.message || 'Falha ao atualizar produto.' });
         }
       });
@@ -146,10 +149,11 @@ export class EstoqueComponent implements OnInit {
       this.produtoService.criar(request).subscribe({
         next: (response) => {
           this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: `Produto ${response.nome} criado.` });
+          this.produtoForm.markAsPristine(); // <-- ESSENCIAL: MARCA COMO SALVO
           this.fecharDialog();
           this.carregarProdutos();
         },
-        error: (err) => { // Não mudei para '_err' pois 'err.error.message' está em uso
+        error: (err) => { 
           this.messageService.add({ severity: 'error', summary: 'Erro', detail: err.error.message || 'Falha ao criar produto.' });
         }
       });
@@ -178,7 +182,21 @@ export class EstoqueComponent implements OnInit {
   }
 
   fecharDialog(): void {
-    this.produtoDialog = false;
+    if (this.produtoForm.dirty) {
+      this.confirmationService.confirm({
+        message: 'Você tem alterações não salvas. Deseja realmente sair e descartar as mudanças?',
+        header: 'Atenção: Dados não Salvos',
+        icon: 'pi pi-exclamation-triangle',
+        acceptLabel: 'Sim, Descartar',
+        rejectLabel: 'Não, Continuar Editando',
+        accept: () => {
+          this.produtoForm.reset();
+          this.produtoDialog = false;
+        }
+      });
+    } else {
+      this.produtoDialog = false;
+    }
   }
 
   salvarMovimento(): void {
