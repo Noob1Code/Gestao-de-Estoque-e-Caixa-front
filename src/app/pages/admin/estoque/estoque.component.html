@@ -59,7 +59,8 @@
 
 
 <p-dialog [(visible)]="produtoDialog" [style]="{width: '500px'}"
-    [header]="isEditMode ? 'Editar Produto' : 'Novo Produto'" [modal]="true" (onHide)="fecharDialog()">
+    [header]="isEditMode ? 'Editar Produto' : 'Novo Produto'" [modal]="true" [closable]="false"
+    (onHide)="fecharDialog()">
 
     <form [formGroup]="produtoForm" (ngSubmit)="salvarProduto()">
 

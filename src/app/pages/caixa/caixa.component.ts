@@ -1,16 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MessageService } from 'primeng/api';
-
-// Nossos Serviços e DTOs
+import { MessageService, ConfirmationService } from 'primeng/api'; 
 import { ProdutoService } from '../../core/services/produto.service';
 import { VendaService } from '../../core/services/venda.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ProdutoResponseDTO } from '../../core/models/produto.dto';
 import { ItemVenda, VendaRequestDTO, ItemVendaRequestDTO } from '../../core/models/venda.dto';
-
-// Importações PrimeNG
 import { CardModule } from 'primeng/card';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
@@ -19,6 +15,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { ConfirmDialogModule } from 'primeng/confirmdialog'; 
 
 @Component({
   selector: 'app-caixa',
@@ -33,16 +30,17 @@ import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
     FormsModule,
     InputNumberModule,
     AutoCompleteModule,
-    InputTextModule
+    InputTextModule,
+    ConfirmDialogModule
   ],
   templateUrl: './caixa.component.html',
-  styleUrls: ['./caixa.component.css']
+  styleUrls: ['./caixa.component.css'],
+  providers: [ConfirmationService]
 })
 export class CaixaComponent implements OnInit {
 
   itemForm!: FormGroup;
-
-  itensVenda: ItemVenda[] = [];
+  itensVenda: ItemVenda[] = []; 
 
   produtosSugeridos: ProdutoResponseDTO[] = [];
 
@@ -55,6 +53,7 @@ export class CaixaComponent implements OnInit {
   private vendaService = inject(VendaService);
   private messageService = inject(MessageService);
   private produtoService = inject(ProdutoService);
+  private confirmationService = inject(ConfirmationService);
 
   ngOnInit(): void {
     this.itemForm = this.fb.group({
@@ -140,12 +139,31 @@ export class CaixaComponent implements OnInit {
     this.itemForm.reset({ quantidade: 1 });
   }
 
-  cancelarVenda(): void {
+  private limparEstadoVenda(): void {
     this.itensVenda = [];
     this.valorRecebido = null;
     this.atualizarTotal();
     this.limparFormularioItem();
-    this.messageService.add({ severity: 'info', summary: 'Cancelado', detail: 'Venda cancelada.' });
+  }
+  
+  cancelarVenda(): void {
+    if (this.itensVenda.length === 0) {
+      this.messageService.add({ severity: 'info', summary: 'Cancelado', detail: 'Venda cancelada.' });
+      this.limparEstadoVenda(); 
+      return;
+    }
+    
+    this.confirmationService.confirm({
+      message: 'Você tem itens no carrinho. Deseja realmente cancelar esta venda?',
+      header: 'Confirmar Cancelamento',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim, Cancelar Venda',
+      rejectLabel: 'Não, Manter Itens',
+      accept: () => {
+        this.messageService.add({ severity: 'info', summary: 'Cancelado', detail: 'Venda cancelada.' });
+        this.limparEstadoVenda();
+      }
+    });
   }
 
   finalizarVenda(): void {
@@ -164,14 +182,12 @@ export class CaixaComponent implements OnInit {
       return;
     }
 
-    // 1. Mapeia o "carrinho" (ItemVenda) para o DTO (ItemVendaRequestDTO)
     const itensRequest: ItemVendaRequestDTO[] = this.itensVenda.map(item => ({
       produtoId: item.produto.id,
       quantidade: item.quantidade,
       precoUnitario: item.precoUnitario
     }));
 
-    // 2. Monta o DTO da Venda
     const vendaRequest: VendaRequestDTO = {
       usuarioId: usuarioLogado.id,
       itens: itensRequest,
@@ -179,11 +195,10 @@ export class CaixaComponent implements OnInit {
       total: this.totalVenda
     };
 
-    // 3. Envia para o serviço
     this.vendaService.registrarVenda(vendaRequest).subscribe({
       next: (response) => {
         this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: `Venda #${response.id} registrada! Troco: ${response.troco.toFixed(2)}` });
-        this.cancelarVenda();
+        this.limparEstadoVenda();
       },
       error: (err) => {
         this.messageService.add({ severity: 'error', summary: 'Erro ao Finalizar', detail: err.error.message || 'Não foi possível registrar a venda.' });

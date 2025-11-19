@@ -2,7 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
-// Imports necessários para Filtro e Modal
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { CalendarModule } from 'primeng/calendar'; 
@@ -10,7 +9,6 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button'; 
 import { InputTextModule } from 'primeng/inputtext';
 import { TagModule } from 'primeng/tag';
-// Serviços e DTOs
 import { VendaService } from '../../core/services/venda.service';
 import { ProdutoService } from '../../core/services/produto.service';
 import { VendaResponseDTO } from '../../core/models/venda.dto';
@@ -39,22 +37,18 @@ export class DashboardComponent implements OnInit {
   private vendaService = inject(VendaService);
   private produtoService = inject(ProdutoService);
 
-  // KPIs
   faturamentoHoje: number = 0;
   qtdVendasHoje: number = 0;
   produtosBaixoEstoque: number = 0;
 
-  // Configurações dos Gráficos
   topProdutosData: any;
   topProdutosOptions: any;
   estoqueData: any;
   estoqueOptions: any;
 
-  // --- Propriedades de Filtro ---
   dataInicio: Date | null = new Date(); 
   dataFim: Date | null = new Date();    
   
-  // --- Propriedades do Modal de Estoque ---
   baixoEstoqueDialogVisible = false; 
   produtosBaixoEstoqueLista: ProdutoResponseDTO[] = [];
 
@@ -64,7 +58,6 @@ export class DashboardComponent implements OnInit {
     this.configurarOpcoesGraficos();
   }
 
-  // Chamado ao carregar a tela e ao clicar em "Filtrar"
   carregarDadosVendas(): void {
     const filtros = { dataInicio: this.dataInicio, dataFim: this.dataFim };
 
@@ -77,11 +70,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Carrega dados de estoque (independente do filtro de data)
   carregarDadosEstoque() {
     this.produtoService.listarTodos({ ativo: true }).subscribe({
       next: (produtos) => {
-        // Filtra e armazena a lista para o modal
         this.produtosBaixoEstoqueLista = produtos.filter(p => p.quantidadeEstoque < 10);
         this.produtosBaixoEstoque = this.produtosBaixoEstoqueLista.length;
         this.gerarGraficoEstoque(produtos);
@@ -91,12 +82,10 @@ export class DashboardComponent implements OnInit {
   }
   
   aplicarFiltro() {
-    // Reexecuta a busca de vendas com as datas selecionadas
     this.carregarDadosVendas();
   }
   
   mostrarBaixoEstoque() {
-    // Exibe o modal
     this.baixoEstoqueDialogVisible = true;
   }
 

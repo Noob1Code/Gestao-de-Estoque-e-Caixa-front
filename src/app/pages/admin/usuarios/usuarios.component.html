@@ -55,15 +55,12 @@
     </p-table>
 </p-card>
 
-
 <p-dialog 
     [(visible)]="usuarioDialog" 
     [style]="{width: '500px'}" 
     [header]="isEditMode ? 'Editar Usuário' : 'Novo Usuário'" 
     [modal]="true" 
-    (onHide)="fecharDialog()">
-
-    <form [formGroup]="usuarioForm" (ngSubmit)="salvarUsuario()">
+    > <form [formGroup]="usuarioForm" (ngSubmit)="salvarUsuario()">
         <div class="field">
             <label for="nomeCompleto">Nome Completo</label>
             <input pInputText id="nomeCompleto" formControlName="nomeCompleto" class="w-full" />
